@@ -10,7 +10,6 @@ class User(db.Model):
         return f'User {self.username}'
 
 
-
 class Pitch:
 
     all_pitches = []
@@ -29,3 +28,6 @@ class Pitch:
     @classmethod
     def clear_pitch(cls):
         Pitch.all_pitches.clear()
+
+
+
