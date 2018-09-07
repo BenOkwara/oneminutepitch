@@ -17,9 +17,6 @@ class Config:
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
 
 
-
-
-
 class ProdConfig(Config):
     '''
     Production  configuration child class
@@ -39,7 +36,6 @@ class DevConfig(Config):
     '''
 
     DEBUG = True
-
 
 config_options = {
 'development':DevConfig,
