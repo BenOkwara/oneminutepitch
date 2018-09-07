@@ -7,6 +7,7 @@ from datetime import datetime
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
     # Passes in a user id to this function and the function queries
     #  the database and gets a user's id as a response
 
@@ -48,7 +49,6 @@ class Role(db.Model):
     def __repr__(self):
         return f'User {self.name}'
 
-
 class Category(db.Model):
 
     __tablename__ = 'categories'
@@ -66,8 +66,8 @@ class Category(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_categories(cls, id):
-        categories = Category.query.filter_by(id=id).all()
+    def get_categories(cls, category):
+        categories = Category.query.filter_by(category).all()
         return categories
 
 class Pitches(db.Model):
@@ -76,7 +76,7 @@ class Pitches(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     pitchcontent = db.Column(db.String)
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
+    category = db.Column(db.Integer, db.ForeignKey("categories.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     comment = db.relationship(db.String, db.ForeignKey("comments.id"))
     votecounter = db.relationship("Countvotes", backref="pitches", lazy="dynamic")
