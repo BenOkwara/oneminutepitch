@@ -21,8 +21,8 @@ class User(UserMixin,db.Model):
     profile_pic_path = db.Column(db.String())
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(255))
-    pitches = db.relationship('Pitches', backref='user', lazy="dynamic")
-    comment = db.relationship("Comments", backref="user", lazy="dynamic")
+    pitches = db.relationship('Pitch', backref='user', lazy="dynamic")
+    comment = db.relationship("Comment", backref="user", lazy="dynamic")
     votecounter = db.relationship("Countvotes", backref="user", lazy="dynamic")
 
     @property
@@ -50,82 +50,63 @@ class Role(db.Model):
         return f'User {self.name}'
 
 class Category(db.Model):
-
     __tablename__ = 'categories'
 
-    # table columns
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    pitches = db.relationship('Pitches', backref='category', lazy="dynamic")
-
-    # save pitches
-    def save_category(self):
-        db.session.add(self)
-        db.session.commit()
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(255), index = True)
+    pitches = db.relationship('Pitch', backref = 'category', lazy = "dynamic")
 
     @classmethod
-    def get_categories(cls, category):
-        categories = Category.query.filter_by(category).all()
+    def get_categories(cls):
+        categories = Category.query.all()
         return categories
 
-class Pitches(db.Model):
+class Pitch(db.Model):
 
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer, primary_key=True)
-    pitchcontent = db.Column(db.String)
-    category = db.Column(db.Integer, db.ForeignKey("categories.id"))
+    post = db.Column(db.String(300), index=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    comment = db.relationship(db.String, db.ForeignKey("comments.id"))
-    votecounter = db.relationship("Countvotes", backref="pitches", lazy="dynamic")
-    time_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    comments = db.relationship('Comment', backref='pitch', lazy="dynamic")
+    votecounter = db.relationship("Countvotes", backref="pitch", lazy="dynamic")
+    time = db.Column(db.DateTime, default=datetime.utcnow)
 
     def save_pitch(self):
         ''' Save the pitches '''
         db.session.add(self)
         db.session.commit()
 
-    @classmethod
-    def clear_pitches(cls):
-        Pitches.all_pitches.clear()
 
     # display pitches
 
     def get_pitches(id):
-        pitches = Pitches.query.filter_by(category_id=id).all()
+        pitches = Pitch.query.filter_by(category_id = id).all()
         return pitches
 
-class Comments(db.Model):
+class Comment(db.Model):
 
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)
-    commentcontent = db.Column(db.String)
+    post_comment = db.Column(db.String(255), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    pitches = db.relationship('Pitches', backref='comments', lazy="dynamic")
-    postedat = db.Column(db.DateTime, default=datetime.utcnow)
+    pitch_id = db.Column(db.Integer, db.ForeignKey('pitches.id'))
+    time = db.Column(db.DateTime, default=datetime.utcnow)
 
     def save_comment(self):
         ''' Save the comments '''
         db.session.add(self)
         db.session.commit()
 
-    @classmethod
-    def clear_comments(cls):
-        Comments.all_comments.clear()
 
     # display comments
 
-    def get_comments(self, id):
-        comment = Comments.query.order_by(
-        Comments.time_posted.desc()).filter_by(pitches=id).all()
-        return comment
-
-    def get_pitches(id):
-        pitches = Pitches.query.filter_by(category_id=id).all()
-        return pitches
+    @classmethod
+    def get_comments(cls, id):
+        comments = Comment.query.filter_by(pitch_id=id).all()
+        return comments
 
 class Countvotes(db.Model):
     __tablename__ = 'countvotes'

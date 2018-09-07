@@ -1,7 +1,7 @@
 from flask import render_template,redirect,url_for, abort
 from . import main
 from .forms import PitchForm, UpdateProfile, CategoryForm
-from ..models import Pitches, User, Category, Comments
+from ..models import Pitches, User,  Comments
 from flask_login import login_required, current_user
 from .. import db, photos
 
@@ -10,10 +10,10 @@ from .. import db, photos
 def index():
     """ View root page function that returns index page """
 
-    category = Category.get_categories(id)
+    # category = Category.get_categories(id)
 
     title = 'WELCOME TO ONE MINUTE PITCH'
-    return render_template('index.html', title = title, categories=category)
+    return render_template('index.html', title = title, )
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
