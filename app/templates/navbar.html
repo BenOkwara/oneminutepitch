@@ -1,4 +1,11 @@
-<div class="navbar navbar-inverse" role="navigation">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div class="navbar navbar-inverse" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -12,7 +19,18 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                  {% if current_user.is_authenticated %}
+                  <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
+                  {% else %}
+                  <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
+                  {%endif%}
+                </ul>
             </div>
 
         </div>
     </div>
+  </body>
+</html>
