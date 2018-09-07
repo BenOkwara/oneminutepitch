@@ -21,8 +21,8 @@ class User(UserMixin,db.Model):
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(255))
     pitches = db.relationship('Pitches', backref='user', lazy="dynamic")
-    comment = db.relationship("Comments", backref="pitches", lazy="dynamic")
-    votecounter = db.relationship("Countvotes", backref="pitches", lazy="dynamic")
+    comment = db.relationship("Comments", backref="user", lazy="dynamic")
+    votecounter = db.relationship("Countvotes", backref="user", lazy="dynamic")
 
     @property
     def password(self):
@@ -54,9 +54,11 @@ class Category(db.Model):
     __tablename__ = 'categories'
 
     # table columns
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     description = db.Column(db.String(255))
+    pitches = db.relationship('Pitches', backref='category', lazy="dynamic")
 
     # save pitches
     def save_category(self):
@@ -64,10 +66,9 @@ class Category(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_categories(cls):
-        categories = Category.query.all()
+    def get_categories(cls, id):
+        categories = Category.query.filter_by(id=id).all()
         return categories
-
 
 class Pitches(db.Model):
 
@@ -77,7 +78,7 @@ class Pitches(db.Model):
     pitchcontent = db.Column(db.String)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    comment = db.relationship("Comments", backref="pitches", lazy="dynamic")
+    comment = db.relationship(db.String, db.ForeignKey("comments.id"))
     votecounter = db.relationship("Countvotes", backref="pitches", lazy="dynamic")
     time_posted = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -115,7 +116,6 @@ class Comments(db.Model):
     def clear_comments(cls):
         Comments.all_comments.clear()
 
-
     # display comments
 
     def get_comments(self, id):
@@ -135,11 +135,11 @@ class Countvotes(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     pitches = db.Column(db.Integer, db.ForeignKey("pitches.id"))
 
-    def save_vote(self):
+    def save_votecounter(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
-    def get_votes(cls,user_id,pitches):
-        votecounter = Countvotes.query.filter_by(user_id=user_id, pitches_id=pitches).all()
+    def get_votecounter(cls,user_id,pitches):
+        votecounter = Countvotes.query.filter_by(user_id=user_id, pitches=pitches).all()
         return votecounter
