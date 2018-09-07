@@ -2,7 +2,7 @@ from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
-
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -43,26 +43,16 @@ class Role(db.Model):
 
     def __repr__(self):
         return f'User {self.name}'
-#
-#
-# class Pitch:
-#
-#     all_pitches = []
-#
-#     def __init__(self,title,pitch):
-#         # self.movie_id = movie_id
-#         self.title = title
-#         # self.imageurl = imageurl
-#         self.pitch = pitch
-#
-#
-#     def save_pitch(self):
-#         Pitch.all_pitches.append(self)
-#
-#
-#     @classmethod
-#     def clear_pitch(cls):
-#         Pitch.all_pitches.clear()
-#
-#
-#
+
+
+class Review(db.Model):
+
+    __tablename__ = 'reviews'
+
+    id = db.Column(db.Integer,primary_key = True)
+    movie_id = db.Column(db.Integer)
+    movie_title = db.Column(db.String)
+    image_path = db.Column(db.String)
+    movie_review = db.Column(db.String)
+    posted = db.Column(db.DateTime,default=datetime.utcnow)
+    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
