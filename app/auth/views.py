@@ -15,9 +15,7 @@ def register():
                     username = form.username.data,
                     password = form.password.data)
 
-
         # add user to the database
-
 
         db.session.add(user)
         db.session.commit()
