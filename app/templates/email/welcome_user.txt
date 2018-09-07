@@ -1,10 +1,10 @@
 Hello {{user.username}}
-Welcome to One Minute Pitch
+Welcome to One Minute Pitch by Melissa Malala
 I've noted that you just signed up!
 
- Welcome to our application and
- I want to welcome you to the family.
-  Please enjoy the pitches and feel free to submit one of your own.
-  You can also comment on a pitch and leave feedback!
+Welcome to our application and
+I want to welcome you to my family.
+Please enjoy the pitches and feel free to submit one of your own.
+You can also comment on a pitch and leave feedback!
 
-  Thanks!
+Thanks!

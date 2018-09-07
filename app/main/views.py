@@ -39,8 +39,6 @@ def movie(id):
 
     return render_template('pitch.html',title = title,movie = movie,reviews = reviews)
 
-
-
 @main.route('/search/<movie_name>')
 def search(movie_name):
     '''
@@ -84,6 +82,9 @@ def new_review(id):
             abort(404)
 
         return render_template("profile/profile.html", user=user)
+
+
+
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
