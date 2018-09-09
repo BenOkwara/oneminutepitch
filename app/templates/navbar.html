@@ -18,11 +18,7 @@
         <ul class="nav navbar-nav navbar-right">
           {% if current_user.is_authenticated %}
 
-            <li><a class="nav-item nav-link" href="{{ url_for('main.new_pitch') }}">New Post</a></li>
-            <li><a class="nav-item nav-link" href="{{ url_for('main.index') }}">New Product Pitch</a></li>
-           <li> <a class="nav-item nav-link" href="{{ url_for('main.index') }}">New Pick Up Line</a></li>
-
-
+            <li><a class="nav-item nav-link" href="{{ url_for('main.new_pitch') }}">Submit A Pitch</a></li>
 
             <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
           <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
