@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect,url_for, abort
+from flask import render_template, request, redirect,url_for, abort, flash
 from . import main
 from .forms import PitchForm, UpdateProfile, CategoryForm, CommentForm
 from ..models import Pitch, User, Category, Comment
@@ -78,29 +78,43 @@ def category(id):
 
     return render_template('category.html', title = title, category = category, pitch = pitch)
 
+# ADDING A NEW PITCH
+@main.route('/pitch/new', methods=['GET','POST'])
+@login_required
+def new_pitch():
+    form = PitchForm()
+    if form.validate_on_submit():
+        pitch = Pitch(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(pitch)
+        db.session.commit()
+        flash('Your pitch has been created!', 'success')
+        return redirect(url_for('main.new_pitch'))
+    return render_template('newpitch.html', title='New Post', pitch_form=form, legend='New Post')
+
+
 
 # ADDING A NEW PITCH IN A NEW CATEGORY WITH ITS OWN ID OF THE INTEGER FORM
-
-@main.route('/category/pitch/new/<int:id>', methods = ["GET", "POST"])
-@login_required
-def new_pitch(id):
-    '''
-    view category that returns a form to create a pitch
-    '''
-    form = PitchForm()
-    category = Category.query.filter_by(id = id).first()
-    if form.validate_on_submit():
-        title = form.title.data
-        post = form.post.data
-
-        # pitch instance
-        new_pitch = Pitch(category_id = category.id, title = title, post = post, user = current_user)
-
-        # save pitch
-        new_pitch.save_pitch()
-        return redirect(url_for('.category', id = category.id))
-    title = f'{category.name} pitches'
-    return render_template('newpitch.html', title = title, pitch_form = form, category = category)
+#
+# @main.route('/category/pitch/new/<int:id>', methods = ["GET", "POST"])
+# @login_required
+# def new_pitch(id):
+#     '''
+#     view category that returns a form to create a pitch
+#     '''
+#     form = PitchForm()
+#     category = Category.query.filter_by(id = id).first()
+#     if form.validate_on_submit():
+#         title = form.title.data
+#         post = form.post.data
+#
+#         # pitch instance
+#         new_pitch = Pitch(category_id = category.id, title = title, post = post, user = current_user)
+#
+#         # save pitch
+#         new_pitch.save_pitch()
+#         return redirect(url_for('.category', id = category.id))
+#     title = f'{category.name} pitches'
+#     return render_template('newpitch.html', title = title, pitch_form = form, category = category)
 
 
 # ADDING A NEW COMMENT TO A PITCH

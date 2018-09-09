@@ -85,6 +85,10 @@ class Pitch(db.Model):
         pitches = Pitch.query.filter_by(category_id = id).all()
         return pitches
 
+
+    def __repr__(self):
+        return f"Pitch('{self.id}', '{self.time}')"
+
 class Comment(db.Model):
 
     __tablename__ = 'comments'

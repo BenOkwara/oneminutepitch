@@ -12,6 +12,8 @@
 {% block content %}
 
 
+<div class="jumbotron" style="text-align: center">
+
 
 <div class="container" id="index-container">
         <div class="row welcome">
@@ -22,7 +24,29 @@
         </div>
 
     </div>
+    </div>
 
 
+<div class="jumbotron" style="text-align: center">
+  <article class="media content-section">
+        <div class="media-body">
+          <h2><a class="article-title" href="{{url_for('main.index')}}">General Post</a></h2>
+          <p class="article-content">Have a general post, lets read it</p>
+          </div>
+      </article>
+      <article class="media content-section">
+        <div class="media-body">
+          <h2><a class="article-title" href="{{url_for('main.index')}}">Product Pitch</a></h2>
+          <p class="article-content">Have a Product? Why dont you give it a pitch</p>
+          </div>
+      </article>
+      <article class="media content-section">
+        <div class="media-body">
+          <h2><a class="article-title" href="{{url_for('main.index')}}">Pick Up Line</a></h2>
+          <p class="article-content">Fancy Yourself a Romantic? let us see </p>
+          </div>
+      </article>
+
+</div>
 
 {% endblock%}
