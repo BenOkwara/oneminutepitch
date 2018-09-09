@@ -1,7 +1,7 @@
 from flask import render_template,redirect,url_for, abort
 from . import main
 from .forms import PitchForm, UpdateProfile, CategoryForm
-from ..models import Pitch, User,  Comment
+from ..models import Pitch, User, Category, Comment
 from flask_login import login_required, current_user
 from .. import db, photos
 
@@ -10,10 +10,11 @@ from .. import db, photos
 def index():
     """ View root page function that returns index page """
 
-    # category = Category.get_categories(id)
+    category = Category.get_categories()
 
     title = 'WELCOME TO ONE MINUTE PITCH'
-    return render_template('index.html', title = title, )
+    return render_template('index.html', title = title, category = category)
+
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
@@ -51,7 +52,23 @@ def update_pic(uname):
 # ----- TESTING HERE
 
 
-#display categories on the landing page
+#display categories
+
+@main.route('/category/<int:id>')
+def category(id):
+    '''
+    view category function that returns the pitches of that category
+    '''
+    category = Category.query.get(id)
+
+    if category is None:
+        abort(404)
+
+    title = f'{category.name} pitches'
+    pitch = Pitch.get_pitches(category.id)
+
+    return render_template('category.html', title = title, category = category, pitch = pitch)
+
 
 #Route for adding a new pitch
 @main.route('/category/pitch/<int:id>', methods=['GET', 'POST'])
@@ -70,16 +87,8 @@ def new_pitch(id):
         new_pitch.save_pitch()
         return redirect(url_for('.category', id=category.id))
 
-    return render_template('pitch.html', pitch_form=form, category=category)
+    return render_template('newpitch.html', pitch_form=form, category=category)
 
-@main.route('/categories/<int:id>')
-def category(id):
-    category = Category.query.get(id)
-    if category is None:
-        abort(404)
-
-    pitches=Pitches.get_pitches(id)
-    return render_template('category.html', pitches=pitches, category=category)
 
 @main.route('/add/category', methods=['GET','POST'])
 @login_required
@@ -113,7 +122,7 @@ def view_pitch(id):
         abort(404)
     #
     comment = Comments.get_comments(id)
-    return render_template('view-pitch.html', pitches=pitches, comment=comment, category_id=id)
+    return render_template('view-newpitch.html', pitches=pitches, comment=comment, category_id=id)
 
 #adding a comment
 @main.route('/write_comment/<int:id>', methods=['GET', 'POST'])
