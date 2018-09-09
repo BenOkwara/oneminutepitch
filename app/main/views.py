@@ -1,4 +1,4 @@
-from flask import render_template,redirect,url_for, abort
+from flask import render_template, request, redirect,url_for, abort
 from . import main
 from .forms import PitchForm, UpdateProfile, CategoryForm
 from ..models import Pitch, User, Category, Comment
@@ -14,6 +14,16 @@ def index():
 
     title = 'WELCOME TO ONE MINUTE PITCH'
     return render_template('index.html', title = title, category = category)
+
+@main.route('/user/<uname>')
+@login_required
+def profile(uname):
+    user = User.query.filter_by(username = uname).first()
+
+    if user is None:
+        abort(404)
+
+    return render_template("profile/profile.html", user = user)
 
 
 
