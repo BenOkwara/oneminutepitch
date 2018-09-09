@@ -92,29 +92,25 @@ def new_pitch():
     return render_template('newpitch.html', title='New Post', pitch_form=form, legend='New Post')
 
 
+@main.route('/allpitches')
+def pitch_list():
+    pitches = Pitch.query.all()
 
-# ADDING A NEW PITCH IN A NEW CATEGORY WITH ITS OWN ID OF THE INTEGER FORM
-#
-# @main.route('/category/pitch/new/<int:id>', methods = ["GET", "POST"])
-# @login_required
-# def new_pitch(id):
-#     '''
-#     view category that returns a form to create a pitch
-#     '''
-#     form = PitchForm()
-#     category = Category.query.filter_by(id = id).first()
-#     if form.validate_on_submit():
-#         title = form.title.data
-#         post = form.post.data
-#
-#         # pitch instance
-#         new_pitch = Pitch(category_id = category.id, title = title, post = post, user = current_user)
-#
-#         # save pitch
-#         new_pitch.save_pitch()
-#         return redirect(url_for('.category', id = category.id))
-#     title = f'{category.name} pitches'
-#     return render_template('newpitch.html', title = title, pitch_form = form, category = category)
+    return render_template('pitches.html', pitches=pitches)
+
+
+@main.route('/pitch/<int:pitch_id>/',methods=["GET","POST"])
+def pitch(pitch_id):
+    pitch = Pitch.query.get_or_404(pitch_id)
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = form.comment.data
+        new_pitch_comment = Comment(comment=comment, pitch_id=pitch_id, user_id=current_user.id)
+
+        db.session.add(new_pitch_comment)
+        db.session.commit()
+    comments = Comment.query.all()
+    return render_template('post.html', title=pitch.title, pitch=pitch, post_form=form, comments=comments)
 
 
 # ADDING A NEW COMMENT TO A PITCH
@@ -170,3 +166,5 @@ def single_comment(id):
         abort(404)
     format_comment = markdown2.markdown(comment.post_comment,extras=["code-friendly", "fenced-code-blocks"])
     return render_template('comments.html',comment= comment,format_comment=format_comment)
+
+
