@@ -3,10 +3,11 @@
 ## By Melissa Malala
 Published date 7/09/18
 
-##Description
+###Description
 A web application that allows the users to post pitches, comment and vote on pitches.
 
 This link will take to my live site on Git Hub.
+
 ##Setup/Installation Requirements
 open my GitHub
 find repo named Minute Pitch
@@ -16,10 +17,10 @@ $ source virtual/bin/activate or virtual/scripts/activate
 $ python3.6 -m pip install -r requirements.txt (to install all dependencies)
 $ ./start.sh to run the app
 
-##technologies used
-python ( ver 3.6 )
-flask microframework
+##Technologies used
+python ( version 3.6 )
+Flask microframework
 PostgreSQL
 
-##License under MIT
+##License 
 Copyright (C) 2018 ~ Malala

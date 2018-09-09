@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{% import "bootstrap/wtf.html" as wtf %}
+ {% block styles%} {{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}"> {% endblock %}
+<br>
+<br>
+<br>
+<br>
+
+<body>
+  {% block content %}
+  <br>
+  <br>
+  <div class="container">
+    <div class="card-columns">
+      {% for category in category %}
+
+      <div class="card">
+        <div class="card-header">
+          {{category.id}}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{category.name}}</h5>
+          <p class="card-text">{{category.pitches}}</p>
+
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Publish date:{{category.date}}</small>
+        </div>
+
+<button type="button" class="btn btn-outline-primary"><a href="/new_comment">Comment</a></button>
+{% endfor %}
+{% for comment in comment %}
+<div class="card-body">
+
+    <p>{{comment.post_comment}}</p>
+  </div>
+{% endfor %}
+      </div>
+
+
+  {% endblock %}
+    </div>
+       </div>
+ </body>

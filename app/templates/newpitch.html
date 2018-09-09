@@ -1,6 +1,3 @@
-{% extends 'base.html'%}
-{% import "bootstrap/wtf.html" as wtf %}
-
 
 {% extends 'base.html'%}
 {% import "bootstrap/wtf.html" as wtf %}
@@ -16,6 +13,7 @@
         <div class="col-md-4">
 
             {{ wtf.quick_form(pitch_form) }}
+            {{simplemde.load}}
         </div>
 
     </div>
