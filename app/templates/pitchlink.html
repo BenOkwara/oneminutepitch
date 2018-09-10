@@ -1,12 +1,13 @@
 {% extends 'base.html' %} {% import 'bootstrap/wtf.html' as wtf %} {% block content %}
 
-
+<div class="jumbotron" style="text-align:center";>
 <h1>GENERAL PITCHES</h1>
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
       <a class="mr-2" href="#">{{ pitch.user_id }}</a>
       <small class="text-muted">{{ pitch.time }}</small>
+
       <!--{% if pitch.user_id == current_user %}-->
       <!--<div class="">-->
         <!--<a class="btn btn-secondary btn-sm m-1" href="{{ url_for('main.update_pitch', pitch_id=pitch.id) }}">Update</a>-->
@@ -36,4 +37,5 @@
 </article>
 {% endfor %}
 
+</div>
 {% endblock content %}
