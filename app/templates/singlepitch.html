@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<div class="jumbotron">
   <div class="container">
   <br>
     <br>
@@ -21,16 +21,17 @@
 
    <div class="card-body text-secondary">
 
-    <p class="card-text">{{pitch.pitch}}</p>
+    <p class="card-text">{{pitch.content}}</p>
 
    <br>
 
   </div>
 
-            <footer class="blockquote-footer"> <cite title="Source Title">Category: {{pitch.category_id}} </cite></footer>
+            <!--<footer class="blockquote-footer"> <cite title="Source Title">Category: {{pitch.category_id}} </cite></footer>-->
 
 </div>
 
+</div>
 </div>
 
 {% endblock %}

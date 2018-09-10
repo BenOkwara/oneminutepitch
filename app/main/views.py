@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect,url_for, abort, flash
 from . import main
-from .forms import PitchForm, UpdateProfile, CategoryForm, CommentForm
-from ..models import Pitch, User, Category, Comment
+from .forms import PitchForm, UpdateProfile, CommentForm
+from ..models import Pitch, User, Comment
 from flask_login import login_required, current_user
 from .. import db, photos
 import markdown2
@@ -11,11 +11,11 @@ import markdown2
 def index():
     """ View root page function that returns index page """
 
-    category = Category.get_categories()
+    # category = Category.get_categories()
     pitches = Pitch.query.all()
 
     title = 'WELCOME TO ONE MINUTE PITCH'
-    return render_template('index.html', title = title, category = category, pitches=pitches)
+    return render_template('index.html', title = title, pitches=pitches)
 
 # VIEWING EACH SPECIFIC PROFILE
 @main.route('/user/<uname>')
@@ -29,11 +29,10 @@ def profile(uname):
     return render_template("profile/profile.html", user = user)
 
 # UPDATING PROFILE
-
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
 def update_profile(uname):
-    user = User.query.filter_by(username = uname).first()
+    user = User.query.filter_by(username=uname).first()
     if user is None:
         abort(404)
 
@@ -61,34 +60,29 @@ def update_pic(uname):
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
 
-#display categories
-
-@main.route('/category/<id>')
-def category(id):
-    '''
-    view category function that returns the pitches of that category
-    '''
-    category = Category.query.get(id)
-
-    if category is None:
-        abort(404)
-
-    title = f'{category.name} pitches'
-    pitch = Pitch.get_pitches(category.id)
-
-    return render_template('category.html', title = title, category = category, pitch = pitch)
-
 # ADDING A NEW PITCH
 @main.route('/pitch/new', methods=['GET','POST'])
 @login_required
 def new_pitch():
     form = PitchForm()
+
     if form.validate_on_submit():
-        pitch = Pitch(title=form.title.data, content=form.content.data, author=current_user)
+
+        title=form.title.data
+        content=form.content.data
+        category_id=form.category_id.data
+        pitch = Pitch(title=title,
+                      content=content,
+                      category_id=category_id,
+                      user=current_user)
+
         db.session.add(pitch)
         db.session.commit()
+
+        # pitch.save_pitch(pitch)
+        print('kasambuli')
         flash('Your pitch has been created!', 'success')
-        return redirect(url_for('main.new_pitch'))
+        return redirect(url_for('main.single_pitch',id=pitch.id))
 
     return render_template('newpitch.html', title='New Post', pitch_form=form, legend='New Post')
 
@@ -102,11 +96,13 @@ def single_pitch(id):
 
 @main.route('/allpitches')
 def pitch_list():
-    # Function that renders the business categorypitches and its content
+    # Function that renders the business category pitches and its content
 
     pitches = Pitch.query.all()
 
     return render_template('pitches.html', pitches=pitches)
+
+
 
 # ADDING A NEW COMMENT TO A PITCH
 @main.route('/pitch/comment/new/<int:id>', methods = ['GET','POST'])
@@ -134,23 +130,8 @@ def new_comment(id):
     title = f'{pitch.title} comment'
     return render_template('newcomment.html', title = title, comment_form = form, pitch = pitch, )
 
-# testing here
 
-@main.route('/pitch/<int:pitch_id>/',methods=["GET","POST"])
-def pitch(pitch_id):
-    pitch = Pitch.query.get_or_404(pitch_id)
-    form = CommentForm()
-    if form.validate_on_submit():
-        comment = form.comment.data
-        new_pitch_comment = Comment(comment=comment,
-                                    pitch_id=pitch_id,
-                                    user_id=current_user.id)
-
-        db.session.add(new_pitch_comment)
-        db.session.commit()
-    comments = Comment.query.all()
-    return render_template('pitchlink.html', title=pitch.title, pitch=pitch, pitch_form=form, comments=comments)
-
+# UPDATING A PITCH
 
 @main.route('/pitch/<int:pitch_id>/update', methods=['GET','POST'])
 @login_required
@@ -161,7 +142,7 @@ def update_pitch(pitch_id):
     form = PitchForm()
     if form.validate_on_submit():
         pitch.title = form.title.data
-        pitch.post = form.post.data
+        pitch.content = form.content.data
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('main.pitchlink', pitch_id=pitch.id))
@@ -170,6 +151,8 @@ def update_pitch(pitch_id):
         form.content.data = pitch.content
     return render_template('newpitch.html', title='Update Pitch', form=form, legend='Update Pitch')
 
+
+# DELETING A PITCH
 @main.route('/pitch/<int:pitch_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_pitch(pitch_id):
@@ -184,7 +167,7 @@ def delete_pitch(pitch_id):
     flash('Your pitch has been deleted!', 'success')
     return redirect(url_for('main.pitches'))
 
-
+# VIEWING A SPECIFIC PITCH
 @main.route("/view/<id>", methods=["GET","POST"])
 def view_pitch(id):
     pitch = Pitch.query.get(id)
@@ -195,8 +178,7 @@ def view_pitch(id):
     return render_template('view_pitch.html',pitch = pitch,)
 
 
-
-
+# VIEWING PRODUCT PITCHES
 @main.route('/product')
 def product():
     """
@@ -206,7 +188,7 @@ def product():
 
     return render_template('product.html', product=product_pitch)
 
-
+# VIEWING SERVICE PITCHES
 @main.route('/service')
 def service():
     """
@@ -217,7 +199,7 @@ def service():
 
     return render_template('service.html', service=service_pitch)
 
-
+# VIEWING FUNDRAISING PITCHES
 @main.route('/fundraising')
 def fundraising():
     """
@@ -228,7 +210,7 @@ def fundraising():
 
     return render_template('fundraising.html', fundraising=fundraising_pitch)
 
-
+# VIEWING BUSINESS PITCHES
 @main.route('/business')
 def business():
     """
@@ -237,4 +219,4 @@ def business():
 
     business_pitch = Pitch.query.filter_by(category='business').all()
 
-    return render_template('business.html', jobs=business_pitch)
+    return render_template('business.html', business=business_pitch)
