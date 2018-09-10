@@ -123,8 +123,6 @@ def pitch(pitch_id):
                            pitch_form=form,
                            comments=comments)
 
-
-
 # ADDING A NEW COMMENT TO A PITCH
 @main.route('/pitch/comment/new/<int:id>', methods = ['GET','POST'])
 @login_required
