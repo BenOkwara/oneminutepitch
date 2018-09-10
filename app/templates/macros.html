@@ -1,40 +1,16 @@
-<!--{% macro displayCategories(category_list) %}-->
-    <!--{% for category in category_list %}-->
-        <!--<li id="categories">-->
-            <!--<a class="category-button btn btn-default" href="/category/{{category.id}}"><h3>{{category.name}}</h3></a>-->
-        <!--</li>-->
-    <!--{% endfor %}-->
-<!--{% endmacro %}-->
-
-<!--{% macro displayPitches(pitch_list) %}-->
-    <!--{% for pitch in pitch_list %}-->
-        <!--<div class="well col-xs-12 col-sm-4 col-md-4 col-lg-4 pitch-card">-->
-            <!--<div class="row avatar-row">-->
-                <!--<div class="col-md-2 col-lg-2" id="avatar-column">-->
-                    <!--<img id="avatar" src="/static/img/avatar.png" alt="Avatar">-->
-                <!--</div>-->
-                <!--<div class="col-md-8 col-lg-8">-->
-                    <!--<h4>{{pitch.user.username}}</h4>-->
-                    <!--<p>Posted on {{pitch.time}}</p>-->
-                <!--</div>-->
-            <!--</div><hr>-->
-            <!--<div class="row pitch-content">-->
-                <!--<h4><b>{{pitch.title}}</b></h4>-->
-                <!--<p>{{pitch.post}}</p>-->
-            <!--</div>-->
-            <!--<a href="/pitch/reviews/{{pitch.id}}">View Reviews</a>-->
-        <!--</div>-->
-    <!--{% endfor %}-->
-<!--{% endmacro %}-->
-
-
-<!--{% macro displayComments(comment_list) %}-->
-    <!--{% for comment in comment_list %}-->
-        <!--<div class="well reviews-well">-->
-            <!--<li>-->
-                <!--<h3>{{comment.post_comment}}</h3>-->
-                <!--<p>by {{comment.user.username}}</p>-->
-            <!--</li>-->
-        <!--</div>-->
-    <!--{% endfor %}-->
-<!--{% endmacro %}-->
+{% macro displayPitchList(pitch_list) %} {% for pitch in pitch_list %}
+<div class="col-xs-6 col-sm-6 col-md-6">
+  <div class="card m-2">
+    <div class="card-header">
+      Category - {{pitch.category_id}}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{pitch.title}}</h5>
+      <p class="card-text">{{pitch.pitch}}</p>
+      <!--<p class="card-text"><small class="text-muted">{{pitch.author}}</small></p>-->
+      <hr>
+      <!--<p>Add a comment <a href="/comment/{{pitch.id}}">here</a>.</p>-->
+    </div>
+  </div>
+</div>
+{% endfor %} {% endmacro %}

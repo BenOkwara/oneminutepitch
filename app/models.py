@@ -67,21 +67,20 @@ class Pitch(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     post = db.Column(db.String(300), index=True)
-    title = db.Column(db.String, nullable = False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     comments = db.relationship('Comment', backref='pitch', lazy="dynamic")
     votecounter = db.relationship("Countvotes", backref="pitch", lazy="dynamic")
     time = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def save_pitch(self):
+    def save_pitches(self):
         ''' Save the pitches '''
         db.session.add(self)
         db.session.commit()
 
 
     # display pitches
-
+    @classmethod
     def get_pitches(id):
         pitches = Pitch.query.filter_by(category_id = id).all()
         return pitches

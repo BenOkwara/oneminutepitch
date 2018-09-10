@@ -5,9 +5,8 @@ In life, you only have 60 seconds to impress someone. 1 minute can make or break
 This is an application that allows users to use that one minute wisely. The users will submit their one minute pitches and other users will vote on them and leave comments to give their feedback on them.
 
 The pitches are organized by category: Product And Service Pitches
- 
-The pitches are arranged by category and the new posts are displayed first.
 
+The pitches are arranged by category and the new posts are displayed first.
 
 ##User Story
 
@@ -20,11 +19,9 @@ As a user,you can comment on the different pitches and leave feedback.
 As a user, you can submit a pitch in any category.
 As a user, you can view the different categories.
 
-
 ##UI Design
-The application has a clean, simple, well-organized user interface. 
+The application has a clean, simple, well-organized user interface.
 It has a consistent colour scheme and uses appropriate fonts.
-
 
 ##Project Objectives
 The project has a user model.
@@ -34,8 +31,6 @@ The project has a profile page.
 The project follows the proper folder structure.
 The project has a functioning authentication system.
 The project contains migration files for the different model structure.
-
-
 
 ##Technical Requirements
 

@@ -1,8 +1,4 @@
-
-{% extends 'base.html'%}
-{% import "bootstrap/wtf.html" as wtf %}
-
-{% block content %}
+ {% extends 'base.html'%} {% import "bootstrap/wtf.html" as wtf %} {% block content %}
 
 <div class="jumbotron" style="text-align:center">
     <div class="container">
@@ -10,11 +6,10 @@
 
         <div class="col-md-4">
 
-            {{ wtf.quick_form(pitch_form) }}
-            {{simplemde.load}}
+            {{ wtf.quick_form(pitch_form) }} {{simplemde.load}}
         </div>
 
     </div>
-      </div>
+</div>
 
 {% endblock %}

@@ -1,16 +1,14 @@
-{% extends 'base.html' %}
-{% block content %}
-  <h1>GENERAL POSTS</h1>
-    {% for pitch in pitches %}
-      <article class="media content-section">
-        <div class="media-body">
-          <div class="article-metadata">
-            <a class="mr-2" href="#">{{ pitch.user_id }}</a>
-            <small class="text-muted">{{ pitch.time }}</small>
-          </div>
-          <h2><a class="article-title" href="{{ url_for('main.index', pitch_id=pitch.id) }}">{{ pitch.id }}</a></h2>
-          <p class="article-content">{{ pitch.post }}</p>
-          </div>
-      </article>
-    {% endfor %}
-{% endblock content %}
+{% extends 'base.html' %} {% block content %}
+<h1>GENERAL POSTS</h1>
+{% for pitch in pitches %}
+<article class="media content-section">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#">{{ pitch.user_id }}</a>
+      <small class="text-muted">{{ pitch.time }}</small>
+    </div>
+    <h2><a class="article-title" href="{{ url_for('main.index', pitch_id=pitch.id) }}">{{ pitch.id }}</a></h2>
+    <p class="article-content">{{ pitch.post }}</p>
+  </div>
+</article>
+{% endfor %} {% endblock content %}
