@@ -87,12 +87,10 @@ def new_pitch():
     return render_template('newpitch.html', title='New Post', pitch_form=form, legend='New Post')
 
 # VIEW INDIVIDUAL PITCH
-
 @main.route('/pitch/new/<int:id>')
 def single_pitch(id):
     pitch = Pitch.query.get(id)
     return render_template('singlepitch.html',pitch = pitch)
-
 
 @main.route('/allpitches')
 def pitch_list():
@@ -101,6 +99,29 @@ def pitch_list():
     pitches = Pitch.query.all()
 
     return render_template('pitches.html', pitches=pitches)
+
+
+# VIEWING A PITCH WITH COMMENTS AND COMMENTFORM
+@main.route('/pitch/<int:pitch_id>/',methods=["GET","POST"])
+def pitch(pitch_id):
+    pitch = Pitch.query.get(pitch_id)
+    form = CommentForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        comment = form.comment.data
+        new_pitch_comment = Comment(post_comment=comment,
+                                    pitches=pitch_id,
+
+                                    # user_id=current_user.id,
+                                    user=current_user)
+        # new_post_comment.save_post_comments()
+        db.session.add(new_pitch_comment)
+        db.session.commit()
+    comments = Comment.query.all()
+    return render_template('pitchlink.html', title=pitch.title,
+                           pitch=pitch,
+                           pitch_form=form,
+                           comments=comments)
 
 
 
@@ -113,7 +134,6 @@ def new_comment(id):
     '''
     form = CommentForm()
     pitch = Pitch.query.filter_by(id = id).first()
-
 
     if form.validate_on_submit():
         title = form.title.data
@@ -129,7 +149,6 @@ def new_comment(id):
 
     title = f'{pitch.title} comment'
     return render_template('newcomment.html', title = title, comment_form = form, pitch = pitch, )
-
 
 # UPDATING A PITCH
 
@@ -150,7 +169,6 @@ def update_pitch(pitch_id):
         form.title.data = pitch.title
         form.content.data = pitch.content
     return render_template('newpitch.html', title='Update Pitch', form=form, legend='Update Pitch')
-
 
 # DELETING A PITCH
 @main.route('/pitch/<int:pitch_id>/delete', methods=['GET', 'POST'])
@@ -176,7 +194,6 @@ def view_pitch(id):
        pitch.save_pitch()
        return redirect("/view/{pitch_id}".format(pitch_id=id))
     return render_template('view_pitch.html',pitch = pitch,)
-
 
 # VIEWING PRODUCT PITCHES
 @main.route('/product')
@@ -220,3 +237,5 @@ def business():
     business_pitch = Pitch.query.filter_by(category='business').all()
 
     return render_template('business.html', business=business_pitch)
+
+

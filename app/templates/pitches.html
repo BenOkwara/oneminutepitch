@@ -12,7 +12,7 @@
       <small class="text-muted">{{ pitch.time }}</small>
     </div>
     <!--<h2><a class="article-title" href="{{ url_for('main.index', pitch_id=pitch.id) }}">{{ pitch.title }}</a></h2-->
-    <h2><a class="article-title" href="{{ url_for('main.index', pitch_id=pitch.id) }}">{{ pitch.title }}</a></h2>
+    <h2><a class="article-title" href="{{ url_for('main.pitch', pitch_id=pitch.id) }}">{{ pitch.title }}</a></h2>
     <p class="article-content">{{ pitch.content }}</p>
 
      <p class="article-content">{{ pitch.category_id }}</p>
