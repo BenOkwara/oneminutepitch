@@ -115,6 +115,8 @@ def pitch(pitch_id):
                                     # user_id=current_user.id,
                                     user=current_user)
         # new_post_comment.save_post_comments()
+
+
         db.session.add(new_pitch_comment)
         db.session.commit()
     comments = Comment.query.all()

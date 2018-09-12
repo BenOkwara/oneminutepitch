@@ -5,7 +5,7 @@
 <article class="media content-section">
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="#">{{ pitch.user_id }}</a>
+      <a class="mr-2" href="#">{{ pitch.user_id.username }}</a>
       <small class="text-muted">{{ pitch.time }}</small>
 
       <!--{% if pitch.user_id == current_user %}-->
@@ -20,15 +20,18 @@
   </div>
 
 
-
 </article>
 
 
-{{wtf.quick_form(pitch_form)}} {% for comment in comments[::-1] %}
-<article class="">
+{{wtf.quick_form(pitch_form)}}
+
+  {% for comment in comments[::-1] %}
+
+
+  <article class="">
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="#">{{ comment.user_id }}</a>
+      <a class="mr-2" href="#">{{ comment.user.username }}</a>
       <small class="text-muted">{{ comment.pitches }}</small>
     </div>
     <p class="article-content">{{ comment.post_comment }}</p>
