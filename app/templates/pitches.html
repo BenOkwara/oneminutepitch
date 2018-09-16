@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<div class="jumbotron" style="text-align:center;">
-<h1>GENERAL POSTS</h1>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Noto+Serif+KR|Oswald" rel="stylesheet">
+<div class="jumbotron" style="text-align:center; background-color:white;">
+<h1 style="font-family:
+'Open Sans', sans-serif;">GENERAL POSTS</h1>
 {% for pitch in pitches %}
 <article class="media content-section">
   <div class="media-body">
@@ -11,15 +12,12 @@
       <a class="mr-2" href="#">{{ pitch.user.username }}</a>
       <small class="text-muted">{{ pitch.time }}</small>
     </div>
-    <!--<h2><a class="article-title" href="{{ url_for('main.index', pitch_id=pitch.id) }}">{{ pitch.title }}</a></h2-->
+
     <h2><a class="article-title" href="{{ url_for('main.pitch', pitch_id=pitch.id) }}">{{ pitch.title }}</a></h2>
     <p class="article-content">{{ pitch.content }}</p>
-
      <p class="article-content">{{ pitch.category_id }}</p>
   </div>
 </article>
 {% endfor %}
-
   </div>
   {% endblock content %}
-

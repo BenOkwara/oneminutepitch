@@ -1,25 +1,24 @@
-## Minute Pitch
+## Blog Post
 
 ## By Melissa Malala
-Published date 7/09/18
+Published date 14th September 2018
 
 ### Description
-A web application that allows the users to post pitches, comment and vote on pitches.
+A web application that allows the users to post blogposts, comment on blogposts. 
 
 This link will take to my live site on Git Hub.
 
 ## Setup/Installation Requirements
-open my GitHub
-find repo named Minute Pitch
-$ cd MinutePitch
+Open GitHub and find the repo named 'blog' and clone it. 
+$ cd blog
 $ python3.6 -m venv virtual (install virtual environment)
 $ source virtual/bin/activate or virtual/scripts/activate
 $ python3.6 -m pip install -r requirements.txt (to install all dependencies)
 $ ./start.sh to run the app
 
 ## Technologies used
-python ( version 3.6 )
-Flask microframework
+Python ( version 3.6 )
+Flask Microframework
 PostgreSQL
 
 ## License 
